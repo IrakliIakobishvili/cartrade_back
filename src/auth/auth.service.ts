@@ -1,8 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from '../users/dto/login-user.dto';
 import { UsersService } from '../users/users.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+
+import { compare, genSalt, hash } from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -11,30 +13,36 @@ export class AuthService {
 
     }
 
-    async validateUserByPassword(loginAttempt: LoginUserDto) {
+    async login(userData: LoginUserDto) {
+        let user = await this.usersService.findOneByEmail(userData.email);
+        if (!user) {
+            throw new HttpException('Wrong email', HttpStatus.NOT_FOUND);
+        }
 
-        // This will be used for the initial login
-        let userToAttempt = await this.usersService.findOneByEmail(loginAttempt.email);
+        const isMatch = await compare(userData.password, user.password);
 
-        return new Promise((resolve) => {
+        if (!isMatch) {
+            // throw new HttpException('Invalid crendentials', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Wrong password', HttpStatus.BAD_REQUEST);
+        }
+        return this.createJwtPayload(user);
 
-            // Check the supplied password against the hash stored for this email address
-            userToAttempt.checkPassword(loginAttempt.password, (err, isMatch) => {
-
-                if (err) throw new UnauthorizedException();
-
-                if (isMatch) {
-                    // If there is a successful match, generate a JWT for the user
-                    resolve(this.createJwtPayload(userToAttempt));
-
-                } else {
-                    throw new UnauthorizedException();
-                }
-
-            });
-
-        });
-
+        // return new Promise((resolve, reject) => {
+        //     // Check the supplied password against the hash stored for this email address
+        //     user.checkPassword(userData.password, (err, isMatch) => {
+        //         if (err) {
+        //             console.log('ssss');
+        //             throw new UnauthorizedException();
+        //         }
+        //         if (isMatch) {
+        //             // If there is a successful match, generate a JWT for the user
+        //             resolve(this.createJwtPayload(user));
+        //         } else {
+        //             // reject("The man doesn't want to keep his word")
+        //             throw new UnauthorizedException('Wrong password');
+        //         }
+        //     });
+        // });
     }
 
     async validateUserByJwt(payload: JwtPayload) {
@@ -59,7 +67,8 @@ export class AuthService {
         let jwt = this.jwtService.sign(data);
 
         return {
-            expiresIn: 3600,
+            // expiresIn: 3600,
+            expiresIn: 180,
             token: jwt
         }
 
