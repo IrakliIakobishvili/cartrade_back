@@ -10,20 +10,11 @@ import { User } from './interfaces/user.interface';
 @Controller('users')
 export class UsersController {
 
-    constructor(private usersService: UsersService) {
-
-    }
+    constructor(private usersService: UsersService) { }
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
         return await this.usersService.create(createUserDto);
-    }
-
-    // @UseFilters(new HttpExceptionFilter())
-    // @UseFilters(MongoExceptionFilter)
-    @Get(':id')
-    findOne(@Param('id', new ValidateObjectId()) id): Promise<User> {
-        return this.usersService.findOne(id);
     }
 
     // This route will require successfully passing our default auth strategy (JWT) in order
@@ -34,6 +25,13 @@ export class UsersController {
         return {
             message: 'You did it!'
         }
+    }
+
+    // @UseFilters(new HttpExceptionFilter())
+    // @UseFilters(MongoExceptionFilter)
+    @Get(':id')
+    findOne(@Param('id', new ValidateObjectId()) id): Promise<User> {
+        return this.usersService.findOne(id);
     }
 
 }

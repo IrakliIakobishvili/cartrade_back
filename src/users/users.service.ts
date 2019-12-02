@@ -40,6 +40,9 @@ export class UsersService {
 
     async findOne(id): Model<User> {
         // try {
+        // let user: User = await this.userModel.findById(id).catch((err) => {
+        //     throw new HttpException('User not found 2', HttpStatus.FORBIDDEN);
+        // })
         let user: User = await this.userModel.findById(id);
         if (!user) {
             // throw new NotFoundException(`User not found`);

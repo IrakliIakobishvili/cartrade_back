@@ -46,32 +46,25 @@ export class AuthService {
     }
 
     async validateUserByJwt(payload: JwtPayload) {
-
         // This will be used when the user has already logged in and has a JWT
         let user = await this.usersService.findOneByEmail(payload.email);
-
         if (user) {
             return this.createJwtPayload(user);
         } else {
             throw new UnauthorizedException();
         }
-
     }
 
     createJwtPayload(user) {
-
         let data: JwtPayload = {
             email: user.email
         };
-
         let jwt = this.jwtService.sign(data);
-
         return {
             // expiresIn: 3600,
             expiresIn: 180,
             token: jwt
         }
-
     }
 
 }
