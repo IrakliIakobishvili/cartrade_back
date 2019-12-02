@@ -10,7 +10,7 @@ import { UserSchema } from './schemas/user.schema';
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     PassportModule.register({ defaultStrategy: 'jwt', session: false })
   ],
-  exports: [UsersService],
+  exports: [UsersService, PassportModule],
   controllers: [UsersController],
   providers: [UsersService]
 })
