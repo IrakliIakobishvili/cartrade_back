@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { Car } from './interfaces/car.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -29,10 +29,14 @@ export class CarsService {
     }
 
     async delete(id: string): Promise<Car> {
-        return await this.carModel.findByIdAndRemove(id);
+        return await this.carModel.findByIdAndRemove(id).catch(() => {
+            throw new HttpException("Can't delete car",HttpStatus.INTERNAL_SERVER_ERROR);
+        });
     }
 
     async update(id: string, car: Car): Promise<Car> {
-        return await this.carModel.findByIdAndUpdate(id, car, { new: true });
+        return await this.carModel.findByIdAndUpdate(id, car, { new: true }).catch(() => {
+            throw new HttpException("Can't update car",HttpStatus.INTERNAL_SERVER_ERROR);
+        });
     }
 }

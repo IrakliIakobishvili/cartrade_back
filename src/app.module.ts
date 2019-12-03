@@ -10,9 +10,11 @@ import { AuthModule } from './auth/auth.module';
 import { CarsModule } from './cars/cars.module';
 import config from './config/keys';
 // import { CarsController } from './cars/cars.controller';
+import { CommentsModule } from './comments/comments.module';
+import { AnnouncementsModule } from './announcements/announcements.module';
 
 @Module({
-  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule, CarsModule],
+  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule, CarsModule, CommentsModule, AnnouncementsModule],
   controllers: [AppController],
   // controllers: [AppController, ItemsController],
   providers: [AppService],
