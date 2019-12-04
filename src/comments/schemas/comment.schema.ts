@@ -8,11 +8,17 @@ export const CommentSchema = new mongoose.Schema({
     car: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Car"
-    },    
+    },
     message: {
         type: String,
         required: true
-    }
+    },
+    // date: {
+    //     type: Date,
+    //     default: () => {
+    //         return Date.now();
+    //     }
+    // }
 },
     { timestamps: true }
 );

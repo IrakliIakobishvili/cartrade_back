@@ -13,6 +13,10 @@ export class CreateCarDto {
     @IsArray()
     readonly comments: Array<any>;
 
+    @IsNotEmpty()
+    @IsArray()
+    readonly gallery: Array<any>;
+
     @IsObject()
     readonly details: object;
 }
