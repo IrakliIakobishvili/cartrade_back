@@ -12,9 +12,10 @@ import config from './config/keys';
 // import { CarsController } from './cars/cars.controller';
 import { CommentsModule } from './comments/comments.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
+import { InvoicesModule } from './invoices/invoices.module';
 
 @Module({
-  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule, CarsModule, CommentsModule, AnnouncementsModule],
+  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule, CarsModule, CommentsModule, AnnouncementsModule, InvoicesModule],
   controllers: [AppController],
   // controllers: [AppController, ItemsController],
   providers: [AppService],
