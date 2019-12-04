@@ -13,12 +13,16 @@ export class CarsService {
             .populate('diler', '-password')
             .populate({
                 path: 'comments',
+                select: '-car',
                 model: 'Comment',
                 populate: {
                     path: 'author',
+                    select: '-password',
                     model: 'User',
                 }
-            }).exec();
+            })
+            .populate('gallery')
+            .exec();
     }
 
     async findOne(id: string): Promise<Car> {
@@ -36,7 +40,9 @@ export class CarsService {
                     path: 'author',
                     model: 'User',
                 }
-            }).exec();
+            })
+            .populate('gallery')
+            .exec();
         if (!car) {
             throw new NotFoundException(`Car with ${id} not exists!`);
         }

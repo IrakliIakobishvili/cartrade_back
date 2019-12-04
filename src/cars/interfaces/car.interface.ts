@@ -3,6 +3,6 @@ export interface Car {
     owner: string;
     diler: string;
     comments: Array<any>;
-    gallery: Array<any>;
+    gallery: String;
     details: object;
 }

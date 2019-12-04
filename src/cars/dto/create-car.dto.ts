@@ -14,8 +14,8 @@ export class CreateCarDto {
     readonly comments: Array<any>;
 
     @IsNotEmpty()
-    @IsArray()
-    readonly gallery: Array<any>;
+    @IsString()
+    readonly gallery: string;
 
     @IsObject()
     readonly details: object;

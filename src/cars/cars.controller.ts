@@ -29,7 +29,7 @@ export class CarsController {
         return this.carsService.findOne(id);
     }
 
-    @UseGuards(AuthGuard())
+    // @UseGuards(AuthGuard())
     @Post()
     create(@Body() createCarDto: CreateCarDto): Promise<Car> {
         return this.carsService.create(createCarDto);
