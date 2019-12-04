@@ -13,9 +13,10 @@ import config from './config/keys';
 import { CommentsModule } from './comments/comments.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { InvoicesModule } from './invoices/invoices.module';
+import { GalleryModule } from './gallery/gallery.module';
 
 @Module({
-  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule, CarsModule, CommentsModule, AnnouncementsModule, InvoicesModule],
+  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule, CarsModule, CommentsModule, AnnouncementsModule, InvoicesModule, GalleryModule],
   controllers: [AppController],
   // controllers: [AppController, ItemsController],
   providers: [AppService],
