@@ -3,8 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from '../users/dto/login-user.dto';
 import { UsersService } from '../users/users.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-
 import { compare, genSalt, hash } from 'bcryptjs';
+// import { randtoken } from 'rand-token';
+const randtoken = require('rand-token');
 
 @Injectable()
 export class AuthService {
@@ -55,16 +56,60 @@ export class AuthService {
         }
     }
 
+
+    refreshTokens = {};
     createJwtPayload(user) {
-        let data: JwtPayload = {
+        let userData: JwtPayload = {
             email: user.email
         };
-        let jwt = this.jwtService.sign(data);
-        return {
-            // expiresIn: 3600,
-            expiresIn: 180,
-            token: jwt
+
+
+        // const token = jwt.sign(user, config.secret, { expiresIn: config.tokenLife})
+        // const refreshToken = jwt.sign(user, config.refreshTokenSecret, { expiresIn: config.refreshTokenLife})
+
+        // let accessToken = this.jwtService.sign(userData);
+        // let refreshToken = this.jwtService.sign(userData);
+
+        let accessToken = this.jwtService.sign(userData,{ expiresIn: 180});
+        let refreshToken = this.jwtService.sign(userData,{ expiresIn: 360});
+
+        // let refreshToken = randtoken.uid(256);
+        this.refreshTokens[refreshToken] = userData;
+
+        // console.log(this.refreshTokens);
+        
+        // console.log({
+        //     // expiresIn: 3600,
+        //     expiresIn: 180,
+        //     token: jwt,
+        //     refreshToken: refreshToken
+        // });
+        
+        // return {
+        //     // expiresIn: 3600,
+        //     expiresIn: 180,
+        //     token: jwt,
+        //     refreshToken: refreshToken
+        // }
+        const response = {
+            "status": "Logged in",
+            "accessToken": accessToken,
+            "refreshToken": refreshToken,
         }
+        return response;
     }
+
+
+    createRefreshToken(jwt) {
+        // let refreshToken = this.jwtService.sign(jwt,{ expiresIn: 360});
+        return 'irakli'
+    }
+
+    
+    // createRandToken() {
+    //     const refreshToken = randtoken.uid(256);
+    //     this.refreshTokens[refreshToken] = username;
+    //     // res.json({jwt: token, refreshToken: refreshToken});
+    // }
 
 }
