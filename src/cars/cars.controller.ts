@@ -7,7 +7,8 @@ import {
     Body,
     Param,
     HttpCode,
-    UseGuards
+    UseGuards,
+    Request
 } from '@nestjs/common';
 import { CreateCarDto } from './dto/create-car.dto';
 import { CarsService } from './cars.service';
@@ -19,11 +20,31 @@ import { AuthGuard } from '@nestjs/passport';
 export class CarsController {
     constructor(private readonly carsService: CarsService) { }
 
-    @UseGuards(AuthGuard())
+    // @UseGuards(AuthGuard())
+    @UseGuards(AuthGuard('local'))
     @Get()
     findAll(): Promise<Car[]> {
         return this.carsService.findAll();
     }
+
+
+    @UseGuards(AuthGuard('local'))
+    @Post('auth/login')
+    async login(@Request() req) {
+        console.log(req.user);
+        return req.user;
+        // return this.authService.login(req.user);
+    }
+
+
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('profile')
+    getProfile(@Request() req) {
+        return req.user;
+    }
+
+
 
     @Get(':id')
     findOne(@Param('id', new ValidateObjectId()) id): Promise<Car> {

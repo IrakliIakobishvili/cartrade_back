@@ -38,6 +38,24 @@ export class UsersService {
     }
 
 
+    async findOrCreate(profile): Promise<User> {
+        const user = await this.userModel.findOne({ 'facebook.id': profile.id }).exec();
+        if (user) {
+            return user;
+        }
+        const createdUser = new this.userModel({
+            email: profile.emails[0].value,
+            firstName: profile.name.givenName,
+            lastName: profile.name.familyName,
+            Facebook: {
+                id: profile.id,
+                avatar: profile.photos[0].value,
+            },
+            // Does not match to user DTO and interface!!!!
+        });
+        return createdUser.save();
+    }
+
     async findOneByEmail(email): Model<User> {
         return await this.userModel.findOne({ email: email });
     }
