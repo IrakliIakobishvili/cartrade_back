@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, UseGuards, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Put, UseGuards, UseFilters } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -14,7 +14,7 @@ export class UsersController {
 
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
-        return await this.usersService.create(createUserDto);
+        return await this.usersService.register(createUserDto);
     }
 
     // This route will require successfully passing our default auth strategy (JWT) in order
@@ -32,6 +32,11 @@ export class UsersController {
     @Get(':id')
     findOne(@Param('id', new ValidateObjectId()) id): Promise<User> {
         return this.usersService.findOne(id);
+    }
+
+    @Put(':id')
+    update(@Body() updateUserDto: CreateUserDto, @Param('id') id): Promise<User> {
+        return this.usersService.update(id, updateUserDto);
     }
 
 }

@@ -19,6 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class CarsController {
     constructor(private readonly carsService: CarsService) { }
 
+    @UseGuards(AuthGuard())
     @Get()
     findAll(): Promise<Car[]> {
         return this.carsService.findAll();

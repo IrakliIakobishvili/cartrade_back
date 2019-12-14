@@ -2,6 +2,10 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 
 export const UserSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         unique: true,
@@ -10,6 +14,14 @@ export const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        default: 'basic',
+        enum: ["basic", "supervisor", "admin"]
+    },
+    refreshTokens: {
+        type: Array
     }
 });
 

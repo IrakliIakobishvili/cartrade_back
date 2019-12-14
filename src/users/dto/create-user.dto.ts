@@ -1,10 +1,20 @@
-import { IsString, IsEmail, IsNotEmpty, MinLength, MaxLength } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, MinLength, MaxLength, IsOptional, IsArray } from 'class-validator';
 import { IsNotBlank } from './../../shared/validators/is-not-blank.validator';
 
 export class CreateUserDto {
     @IsString()
     @IsNotEmpty()
     readonly name: string;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    readonly role: string;
+
+    @IsOptional()
+    @IsArray()
+    @IsNotEmpty()
+    readonly refreshTokens: Array<any>;
 
     @IsEmail({}, { message: 'Is not a valid email' })
     @IsNotEmpty()

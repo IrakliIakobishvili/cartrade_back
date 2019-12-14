@@ -4,6 +4,7 @@ import { AuthService } from '../auth.service';
 import { PassportStrategy } from '@nestjs/passport';
 import { JwtPayload } from '../interfaces/jwt-payload.interface';
 // import config from '../../config/keys';
+import { jwtConstants } from './../constants';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -12,21 +13,23 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: 'thisismykickasssecretthatiwilltotallychangelater'
+            secretOrKey: jwtConstants.secret,
+            ignoreExpiration: false
         });
 
-    }
-
-    async validate(payload: JwtPayload) {
-
-        const user = await this.authService.validateUserByJwt(payload);
-
-        if (!user) {
-            throw new UnauthorizedException();
-        }
-
-        return user;
+        // super({
+        //     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        //     secretOrKey: _configurationService.get(Configuration.JWT_KEY),
+        // });
 
     }
+
+    // async validate(payload: JwtPayload) {
+    //     const user = await this.authService.validateUserByJwt(payload);
+    //     if (!user) {
+    //         throw new UnauthorizedException();
+    //     }
+    //     return user;
+    // }
 
 }

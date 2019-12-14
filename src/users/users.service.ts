@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { IsValidEmail } from './../shared/validators/is-valid-email.validator';
+// import { AuthService } from './../auth/auth.service';
 
 
 @Injectable()
@@ -11,12 +12,7 @@ export class UsersService {
 
     constructor(@InjectModel('User') private userModel: Model<User>) { }
 
-    // async create(createUserDto: CreateUserDto) {
-    //     let createdUser = new this.userModel(createUserDto);
-    //     return await createdUser.save();
-    // }
-
-    async create(createUserDto: CreateUserDto): Promise<User> {
+    async register(createUserDto: CreateUserDto): Promise<User> {
         // async createNewUser(newUser: CreateUserDto): Promise<User> { 
         if (IsValidEmail(createUserDto.email)) {
             let userRegistered = await this.findOneByEmail(createUserDto.email);
@@ -24,7 +20,15 @@ export class UsersService {
                 // newUser.password = await bcrypt.hash(newUser.password, saltRounds);
                 let createdUser = new this.userModel(createUserDto);
                 // createdUser.roles = ["User"];
-                return await createdUser.save();
+                // return await createdUser.save();
+                let newUser = await createdUser.save();
+                return newUser;
+                // let accessToken = this.authService.generateAccessToken(newUser);
+                // let refreshToken = this.authService.generateRefreshToken(newUser);
+                // return {
+                //     accessToken,
+                //     refreshToken
+                // }
             } else {
                 throw new HttpException('This user is already registered', HttpStatus.FORBIDDEN);
             }
@@ -53,6 +57,12 @@ export class UsersService {
         //     console.log(err);
         //     throw new ServiceUnavailableException("Can't find user");
         // }
+    }
+
+    async update(id: string, user: User): Promise<User> {
+        return await this.userModel.findByIdAndUpdate(id, user, { new: true }).catch(() => {
+            throw new HttpException("Can't update user", HttpStatus.INTERNAL_SERVER_ERROR);
+        });
     }
 
 }
