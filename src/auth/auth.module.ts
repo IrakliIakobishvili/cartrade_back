@@ -10,24 +10,13 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
 import { jwtConstants } from './constants';
 
 @Module({
-  // imports: [
-  //   PassportModule.register({ defaultStrategy: 'jwt', session: false }),
-  //   JwtModule.register({
-  //     secret: jwtConstants.secret,
-  //     signOptions: {
-  //       expiresIn: '1m'
-  //     }
-  //   }),
-  //   UsersModule
-  // ],
-
   imports: [
     UsersModule,
     // PassportModule,
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '5m', issuer: 'CarTrade' },
     }),
   ],
   controllers: [AuthController],

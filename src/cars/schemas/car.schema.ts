@@ -42,5 +42,19 @@ export const CarSchema = new mongoose.Schema({
         price: Number
     }
 },
-    { timestamps: true }
+    { timestamps: true },
+    // { virtuals: true }
 );
+
+// Duplicate the ID field.
+// CarSchema.virtual('id').get(function () {
+//     return this._id.toHexString();
+// });
+
+CarSchema.set('toJSON', {
+    transform: function (doc, ret, options) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+    }
+});

@@ -4,24 +4,25 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './interfaces/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { IsValidEmail } from './../shared/validators/is-valid-email.validator';
-// import { AuthService } from './../auth/auth.service';
-
 
 @Injectable()
 export class UsersService {
-
     constructor(@InjectModel('User') private userModel: Model<User>) { }
-
     async register(createUserDto: CreateUserDto): Promise<User> {
         // async createNewUser(newUser: CreateUserDto): Promise<User> { 
         if (IsValidEmail(createUserDto.email)) {
             let userRegistered = await this.findOneByEmail(createUserDto.email);
             if (!userRegistered) {
                 // newUser.password = await bcrypt.hash(newUser.password, saltRounds);
-                let createdUser = new this.userModel(createUserDto);
+                const createdUser = new this.userModel(createUserDto);
+                console.log(createdUser);
+
                 // createdUser.roles = ["User"];
                 // return await createdUser.save();
-                let newUser = await createdUser.save();
+                let newUser = await createdUser.save().catch(err => {
+                    console.log(err);
+
+                })
                 return newUser;
                 // let accessToken = this.authService.generateAccessToken(newUser);
                 // let refreshToken = this.authService.generateRefreshToken(newUser);
@@ -44,20 +45,33 @@ export class UsersService {
             return user;
         }
         const createdUser = new this.userModel({
+            method: "facebook",
             email: profile.emails[0].value,
-            firstName: profile.name.givenName,
-            lastName: profile.name.familyName,
-            Facebook: {
+            name: profile.name.givenName,
+            facebook: {
                 id: profile.id,
                 avatar: profile.photos[0].value,
             },
-            // Does not match to user DTO and interface!!!!
         });
+
+        // console.log(createdUser);
+
         return createdUser.save();
+        // createdUser.save().then(user => {
+        //     const accessToken = this.authService.generateAccessToken(user);
+        //     return {
+        //         accessToken
+        //     };
+        // })
     }
 
     async findOneByEmail(email): Model<User> {
-        return await this.userModel.findOne({ email: email });
+        // return await this.userModel.findOne({ email: email });
+        return await this.userModel.findOne({ "email": email });
+    }
+
+    async findOneByEmailWithPassword(email): Model<User> {
+        return await this.userModel.findOne({ email: email }).select("+password");
     }
 
     async findOne(id): Model<User> {
@@ -67,7 +81,6 @@ export class UsersService {
         // })
         let user: User = await this.userModel.findById(id);
         if (!user) {
-            // throw new NotFoundException(`User not found`);
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
         return { name: user.name, email: user.email };

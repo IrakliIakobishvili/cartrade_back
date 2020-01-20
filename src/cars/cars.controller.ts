@@ -8,7 +8,8 @@ import {
     Param,
     HttpCode,
     UseGuards,
-    Request
+    Request,
+    Patch
 } from '@nestjs/common';
 import { CreateCarDto } from './dto/create-car.dto';
 import { CarsService } from './cars.service';
@@ -21,30 +22,28 @@ export class CarsController {
     constructor(private readonly carsService: CarsService) { }
 
     // @UseGuards(AuthGuard())
-    @UseGuards(AuthGuard('local'))
+    // @UseGuards(AuthGuard('local'))
+    @UseGuards(AuthGuard('jwt'))
     @Get()
-    findAll(): Promise<Car[]> {
+    async findAll(@Request() req) {
+        // console.log(req.user);
+        // return req.user
         return this.carsService.findAll();
     }
 
-
-    @UseGuards(AuthGuard('local'))
-    @Post('auth/login')
-    async login(@Request() req) {
-        console.log(req.user);
-        return req.user;
-        // return this.authService.login(req.user);
-    }
-
-
+    // @UseGuards(AuthGuard('local'))
+    // @Post('auth/login')
+    // async login(@Request() req) {
+    //     console.log(req.user);
+    //     return req.user;
+    //     // return this.authService.login(req.user);
+    // }
 
     @UseGuards(AuthGuard('jwt'))
     @Get('profile')
     getProfile(@Request() req) {
         return req.user;
     }
-
-
 
     @Get(':id')
     findOne(@Param('id', new ValidateObjectId()) id): Promise<Car> {
@@ -62,7 +61,8 @@ export class CarsController {
         return this.carsService.delete(id);
     }
 
-    @Put(':id')
+    // @Put(':id')
+    @Patch(':id')
     update(@Body() updateCarDto: CreateCarDto, @Param('id') id): Promise<Car> {
         return this.carsService.update(id, updateCarDto);
     }

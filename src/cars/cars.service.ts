@@ -61,6 +61,8 @@ export class CarsService {
     }
 
     async update(id: string, car: Car): Promise<Car> {
+        console.log(id)
+        console.log(car)
         return await this.carModel.findByIdAndUpdate(id, car, { new: true }).catch(() => {
             throw new HttpException("Can't update car", HttpStatus.INTERNAL_SERVER_ERROR);
         });

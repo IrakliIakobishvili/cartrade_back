@@ -11,14 +11,15 @@ export class CreateUserDto {
     @IsNotEmpty()
     readonly role: string;
 
-    @IsOptional()
-    @IsArray()
-    @IsNotEmpty()
-    readonly refreshTokens: Array<any>;
-
     @IsEmail({}, { message: 'Is not a valid email' })
     @IsNotEmpty()
+    @IsOptional()
     readonly email: string;
+
+    // @IsEmail({}, { message: 'Method is required!' })
+    @IsNotEmpty({ message: 'Method is required!' })
+    // @IsOptional()
+    readonly method: string;
 
     @IsNotEmpty()
     @MinLength(3)
