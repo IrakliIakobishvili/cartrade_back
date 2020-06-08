@@ -29,7 +29,7 @@ export class CommentsController {
         return this.commentsService.findOne(id);
     }
 
-    @UseGuards(AuthGuard())
+    // @UseGuards(AuthGuard())
     @Post()
     create(@Body() createCommentDto: CreateCommentDto): Promise<Comment> {
         return this.commentsService.create(createCommentDto);

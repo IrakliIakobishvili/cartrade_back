@@ -14,12 +14,27 @@ import { CommentsModule } from './comments/comments.module';
 import { AnnouncementsModule } from './announcements/announcements.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { GalleryModule } from './gallery/gallery.module';
+import { NavigationModule } from './navigation/navigation.module';
+import { NavItemsModule } from './navitems/navitem.module';
+import { DatabaseModule } from './database/database.module';
+
 
 @Module({
-  imports: [ItemsModule, MongooseModule.forRoot(config.mongoURI), UsersModule, AuthModule, CarsModule, CommentsModule, AnnouncementsModule, InvoicesModule, GalleryModule],
+  imports: [
+    MongooseModule.forRoot(config.mongoURI),
+    // DatabaseModule,
+    ItemsModule, 
+    UsersModule, 
+    AuthModule, 
+    CarsModule, 
+    CommentsModule, 
+    AnnouncementsModule, 
+    InvoicesModule, 
+    GalleryModule, 
+    NavigationModule, 
+    NavItemsModule
+  ],
   controllers: [AppController],
-  // controllers: [AppController, ItemsController],
   providers: [AppService],
-  // providers: [AppService, ItemsService],
 })
 export class AppModule { }

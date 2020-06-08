@@ -1,4 +1,6 @@
-export interface Announcement {
+import { Document } from 'mongoose';
+
+export interface Announcement extends Document {
     id?: string;
     firstName: string;
     lastName: string;

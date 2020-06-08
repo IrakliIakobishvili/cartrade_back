@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { Announcement } from './interfaces/announcements.interface';
+import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -19,8 +20,8 @@ export class AnnouncementsService {
         return announcement;
     }
 
-    async create(announcement: Announcement): Promise<Announcement> {
-        const newannouncement = new this.announcementModel(announcement);
+    async create(createAnnouncementDto: CreateAnnouncementDto): Promise<Announcement> {
+        const newannouncement = new this.announcementModel(createAnnouncementDto);
         return await newannouncement.save();
     }
 
@@ -30,8 +31,8 @@ export class AnnouncementsService {
         });
     }
 
-    async update(id: string, announcement: Announcement): Promise<Announcement> {
-        return await this.announcementModel.findByIdAndUpdate(id, announcement, { new: true }).catch(() => {
+    async update(id: string, createAnnouncementDto: CreateAnnouncementDto): Promise<Announcement> {
+        return await this.announcementModel.findByIdAndUpdate(id, createAnnouncementDto, { new: true }).catch(() => {
             throw new HttpException("Can't update announcement",HttpStatus.INTERNAL_SERVER_ERROR);
         });
     }

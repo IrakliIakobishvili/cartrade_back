@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
+import { CreateCarDto } from './dto/create-car.dto';
 import { Car } from './interfaces/car.interface';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -49,8 +50,8 @@ export class CarsService {
         return car;
     }
 
-    async create(car: Car): Promise<Car> {
-        const newCar = new this.carModel(car);
+    async create(createCarDto: CreateCarDto): Promise<Car> {
+        const newCar = new this.carModel(createCarDto);
         return await newCar.save();
     }
 
@@ -60,10 +61,10 @@ export class CarsService {
         });
     }
 
-    async update(id: string, car: Car): Promise<Car> {
+    async update(id: string, createCarDto: CreateCarDto): Promise<Car> {
         console.log(id)
-        console.log(car)
-        return await this.carModel.findByIdAndUpdate(id, car, { new: true }).catch(() => {
+        console.log(createCarDto)
+        return await this.carModel.findByIdAndUpdate(id, createCarDto, { new: true }).catch(() => {
             throw new HttpException("Can't update car", HttpStatus.INTERNAL_SERVER_ERROR);
         });
     }

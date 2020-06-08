@@ -1,9 +1,11 @@
-export interface User {
+import { Document } from 'mongoose';
+
+export interface User extends Document {
     id?: string,
-    name: string,
+    name?: string,
     email: string,
-    password: string,
+    password?: string,
     role?: string,
     refreshTokens?: Array<any>
-    method: string
+    method?: string
 }

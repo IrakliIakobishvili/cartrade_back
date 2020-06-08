@@ -1,4 +1,6 @@
-export interface Car {
+import { Document } from 'mongoose';
+
+export interface Car extends Document {
     id?: string;
     owner: string;
     diler: string;

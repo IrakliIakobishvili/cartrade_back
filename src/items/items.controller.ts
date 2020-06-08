@@ -19,31 +19,31 @@ import { AuthGuard } from '@nestjs/passport';
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) { }
 
-  @UseGuards(AuthGuard())
-  @Get()
-  findAll(): Promise<Item[]> {
-    return this.itemsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id', new ValidateObjectId()) id): Promise<Item> {
-    return this.itemsService.findOne(id);
-  }
-
-  @Post()
   // @UseGuards(AuthGuard())
-  // @HttpCode(201)
-  create(@Body() createItemDto: CreateItemDto): Promise<Item> {
-    return this.itemsService.create(createItemDto);
-  }
+  // @Get()
+  // findAll(): Promise<Item[]> {
+  //   return this.itemsService.findAll();
+  // }
 
-  @Delete(':id')
-  delete(@Param('id') id): Promise<Item> {
-    return this.itemsService.delete(id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id', new ValidateObjectId()) id): Promise<Item> {
+  //   return this.itemsService.findOne(id);
+  // }
 
-  @Put(':id')
-  update(@Body() updateItemDto: CreateItemDto, @Param('id') id): Promise<Item> {
-    return this.itemsService.update(id, updateItemDto);
-  }
+  // @Post()
+  // // @UseGuards(AuthGuard())
+  // // @HttpCode(201)
+  // create(@Body() createItemDto: CreateItemDto): Promise<Item> {
+  //   return this.itemsService.create(createItemDto);
+  // }
+
+  // @Delete(':id')
+  // delete(@Param('id') id): Promise<Item> {
+  //   return this.itemsService.delete(id);
+  // }
+
+  // @Put(':id')
+  // update(@Body() updateItemDto: CreateItemDto, @Param('id') id): Promise<Item> {
+  //   return this.itemsService.update(id, updateItemDto);
+  // }
 }

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { Invoice } from './interfaces/invoice.interface';
+import { CreateInvoicetDto } from './dto/create-invoice.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -23,8 +24,8 @@ export class InvoicesService {
         return invoice;
     }
 
-    async create(invoice: Invoice): Promise<Invoice> {
-        const newinvoice = new this.invoiceModel(invoice);
+    async create(createInvoicetDto: CreateInvoicetDto): Promise<Invoice> {
+        const newinvoice = new this.invoiceModel(createInvoicetDto);
         return await newinvoice.save();
     }
 
@@ -34,8 +35,8 @@ export class InvoicesService {
         });
     }
 
-    async update(id: string, invoice: Invoice): Promise<Invoice> {
-        return await this.invoiceModel.findByIdAndUpdate(id, invoice, { new: true }).catch(() => {
+    async update(id: string, createInvoicetDto: CreateInvoicetDto): Promise<Invoice> {
+        return await this.invoiceModel.findByIdAndUpdate(id, createInvoicetDto, { new: true }).catch(() => {
             throw new HttpException("Can't update invoice",HttpStatus.INTERNAL_SERVER_ERROR);
         });
     }

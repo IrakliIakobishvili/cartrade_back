@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { Comment } from './interfaces/comment.interface';
+import { CreateCommentDto } from './dto/create-comment.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -20,8 +21,8 @@ export class CommentsService {
         return comment;
     }
 
-    async create(comment: Comment): Promise<Comment> {
-        const newComment = new this.commentModel(comment);
+    async create(createCommentDto: CreateCommentDto): Promise<Comment> {
+        const newComment = new this.commentModel(createCommentDto);
         return await newComment.save();
     }
 
@@ -31,8 +32,8 @@ export class CommentsService {
         });
     }
 
-    async update(id: string, comment: Comment): Promise<Comment> {
-        return await this.commentModel.findByIdAndUpdate(id, comment, { new: true }).catch(() => {
+    async update(id: string, createCommentDto: CreateCommentDto): Promise<Comment> {
+        return await this.commentModel.findByIdAndUpdate(id, createCommentDto, { new: true }).catch(() => {
             throw new HttpException("Can't update comment",HttpStatus.INTERNAL_SERVER_ERROR);
         });
     }

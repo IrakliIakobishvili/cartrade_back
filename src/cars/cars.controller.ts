@@ -63,7 +63,7 @@ export class CarsController {
 
     // @Put(':id')
     @Patch(':id')
-    update(@Body() updateCarDto: CreateCarDto, @Param('id') id): Promise<Car> {
-        return this.carsService.update(id, updateCarDto);
+    update(@Body() createCarDto: CreateCarDto, @Param('id') id): Promise<Car> {
+        return this.carsService.update(id, createCarDto);
     }
 }

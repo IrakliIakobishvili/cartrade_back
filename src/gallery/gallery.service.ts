@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, HttpException, HttpStatus } from '@nestjs/common';
 import { Gallery } from './interfaces/gallery.interface';
-
+import { CreateGalleryDto } from './dto/create-gallery.dto';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -20,8 +20,8 @@ export class GalleryService {
         return gallery;
     }
 
-    async create(gallery: Gallery): Promise<Gallery> {
-        const newGallery = new this.galleryModel(gallery);
+    async create(createGalleryDto: CreateGalleryDto): Promise<Gallery> {
+        const newGallery = new this.galleryModel(createGalleryDto);
         return await newGallery.save();
     }
 
@@ -31,8 +31,8 @@ export class GalleryService {
         });
     }
 
-    async update(id: string, gallery: Gallery): Promise<Gallery> {
-        return await this.galleryModel.findByIdAndUpdate(id, gallery, { new: true }).catch(() => {
+    async update(id: string, createGalleryDto: CreateGalleryDto): Promise<Gallery> {
+        return await this.galleryModel.findByIdAndUpdate(id, createGalleryDto, { new: true }).catch(() => {
             throw new HttpException("Can't update gallery",HttpStatus.INTERNAL_SERVER_ERROR);
         });
     }

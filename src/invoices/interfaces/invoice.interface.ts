@@ -1,4 +1,6 @@
-export interface Invoice {
+import { Document } from 'mongoose';
+
+export interface Invoice extends Document {
     id?: string;
     bill_to: string;
     send_to: string;
