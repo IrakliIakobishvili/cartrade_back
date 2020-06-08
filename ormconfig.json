@@ -1,0 +1,13 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "irakli123",
+    "database": "ecommerce",
+    "entities": [
+        "dist/**/*.entity{.ts,.js}",
+        "src/**/*.entity{.ts,.js}"
+    ],
+    "synchronize": true
+  }

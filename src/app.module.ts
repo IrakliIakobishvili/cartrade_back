@@ -18,21 +18,24 @@ import { NavigationModule } from './navigation/navigation.module';
 import { NavItemsModule } from './navitems/navitem.module';
 import { DatabaseModule } from './database/database.module';
 
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 
 @Module({
   imports: [
-    MongooseModule.forRoot(config.mongoURI),
+    TypeOrmModule.forRoot(),
+    // MongooseModule.forRoot(config.mongoURI),
     // DatabaseModule,
-    ItemsModule, 
-    UsersModule, 
-    AuthModule, 
-    CarsModule, 
-    CommentsModule, 
-    AnnouncementsModule, 
-    InvoicesModule, 
-    GalleryModule, 
+    // ItemsModule, 
+    // UsersModule, 
+    // AuthModule, 
+    // CarsModule, 
+    // CommentsModule, 
+    // AnnouncementsModule, 
+    // InvoicesModule, 
+    // GalleryModule, 
     NavigationModule, 
-    NavItemsModule
+    // NavItemsModule
   ],
   controllers: [AppController],
   providers: [AppService],
